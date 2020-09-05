@@ -1,68 +1,129 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SliderPicker } from 'react-color';
-import style from './style';
+import { Container, Grid, GridItem, Button } from './style';
+
 const matrixLength = 64
 const matrix = Array(matrixLength).fill().map((v,i)=>i);
 
+function getMatrixInitialState({ selectedColor }) {
+	const matrixInitialState = {}
+	matrix.forEach(led => {
+		matrixInitialState[led] = {
+			state: 'active',
+			backgroundColor: 'white' ,
+		}
+	})
+	return  matrixInitialState
+}
+
 function getHeaderStyle(backgroundColor) {
 	return {
-	backgroundColor,
-	width: "100%",
-	height: "10rem",
-	position: "absolute",
-	top: 0,
-	zIndex: -1,
-	display: "flex",
-	justifyContent: "center",
-
+		backgroundColor,
+		width: "100%",
+		height: "10rem",
+		position: "absolute",
+		top: 0,
+		zIndex: 99,
+		display: "flex",
+		justifyContent: "center",
 	}
 }
 
 const initialState = {
-	selectedColor: "#bfdbcf",
+	selectedColor: "#2bb6bb",
+	matrixOneState: null,
+	matrixTwoState: null,
+	matrixThreeState: null,
 }
 
 function Home() {
 	const [state, setState] = useState(initialState)
-	const { selectedColor } = state
+
+	useEffect(() => {
+		const matrixInitialState = getMatrixInitialState({ selectedColor: state.selectedColor })
+		setState(prevState => ({
+			...prevState,
+			matrixOneState: matrixInitialState,
+			matrixTwoState: matrixInitialState,
+			matrixThreeState: matrixInitialState,
+		}))
+	}, [])
+
+
+	const { selectedColor, matrixOneState, matrixTwoState, matrixThreeState } = state
 
 	function handleColorChange(selectedColor) {
-		setState({ selectedColor: selectedColor.hex })
+		setState(prevState => ({ ...prevState, selectedColor: selectedColor.hex }))
+	}
+
+	function clearMatrix(matrixState) {
+		const stateToChangeCopy = { ...state[matrixState] }
+		stateToChangeCopy.forEach()
+	}
+
+	function handleOnLedClick({ index, matrixState }) {
+		const stateToChangeCopy = { ...state[matrixState] }
+		stateToChangeCopy[index] = {
+			...stateToChangeCopy[index],
+			backgroundColor: selectedColor,
+		}
+
+		setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
 	}
 
 	return (
-		<div class={style.container}>
+		<Container>
 			<div style={getHeaderStyle(selectedColor)}>
 				<div style={{ width: "50%", height:"5rem", padding: "1rem 2rem", borderRadius: "3px", marginTop: "2rem", backgroundColor: "white"}}>
 					<SliderPicker color={selectedColor} onChange={handleColorChange} />
 				</div>
 			</div> 
-			<div class={style.grid}>
-				{matrix.map(index => {
-					return (
-						<div class={style.gridItem} key={index}>
-						</div>
-					)
-				})}
-			</div>
-<div class={style.grid}>
-				{matrix.map(index => {
-					return (
-						<div class={style.gridItem} key={index}>
-						</div>
-					)
-				})}
-			</div>
-<div class={style.grid}>
-				{matrix.map(index => {
-					return (
-						<div class={style.gridItem} key={index}>
-						</div>
-					)
-				})}
+
+			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
+				<Grid>
+					{matrixOneState && matrix.map(index => {
+						return (
+							<GridItem
+								backgroundColor={matrixOneState[index].backgroundColor}
+								key={index}
+								onClick={() => handleOnLedClick({ index, matrixState: 'matrixOneState'})}
+							/>
+						)
+					})}
+				</Grid>
+				<Button>Clear</Button>
 			</div>
 
-		</div>
+			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
+				<Grid>
+				{matrixTwoState && matrix.map(index => {
+					return (
+						<GridItem 
+							backgroundColor={matrixTwoState[index].backgroundColor} 
+							key={index}
+							onClick={() => handleOnLedClick({ index, matrixState: 'matrixTwoState'})}
+						/>
+					)
+				})}
+				</Grid>
+				<Button>Clear</Button>
+			</div>
+
+			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
+				<Grid>
+					{matrixThreeState && matrix.map(index => {
+						return (
+							<GridItem
+								backgroundColor={matrixThreeState[index].backgroundColor} 
+								key={index}
+								onClick={() => handleOnLedClick({ index, matrixState: 'matrixThreeState'})}
+							/>
+						)
+					})}
+				</Grid>
+				<Button>Clear</Button>
+			</div>
+		</Container>
 	)
 }
 
