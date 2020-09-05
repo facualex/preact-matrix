@@ -50,7 +50,7 @@ const GridItem = styled('div')`
 	transition: 0.3s all;
     cursor: pointer;
     background-color: ${({ backgroundColor }) => backgroundColor ? backgroundColor : 'white'};
-
+	border-radius: 50%;
     &:hover {
 	    transform: scale(1.1);
 	    z-index: 99;
