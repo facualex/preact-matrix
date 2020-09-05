@@ -52,8 +52,8 @@ function Home() {
 
 	const { selectedColor, matrixOneState, matrixTwoState, matrixThreeState } = state
 
-	function handleColorChange(selectedColor) {
-		setState(prevState => ({ ...prevState, selectedColor: selectedColor.hex }))
+	function handleColorChange(color) {
+		return setState(prevState => ({ ...prevState, selectedColor: color.hex }))
 	}
 
 	function clearMatrix(matrixState) {
@@ -66,12 +66,20 @@ function Home() {
 
 	function handleOnLedClick({ index, matrixState }) {
 		const stateToChangeCopy = { ...state[matrixState] }
-		stateToChangeCopy[index] = {
-			...stateToChangeCopy[index],
-			backgroundColor: selectedColor,
+
+		if (stateToChangeCopy[index].backgroundColor !== selectedColor) {
+			stateToChangeCopy[index] = {
+				...stateToChangeCopy[index],
+				backgroundColor: selectedColor,
+			}
+		} else {
+				stateToChangeCopy[index] = {
+				...stateToChangeCopy[index],
+				backgroundColor: '#fff',
+			}
 		}
 
-		setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
+		return setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
 	}
 
 	return (
