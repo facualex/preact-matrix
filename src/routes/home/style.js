@@ -18,7 +18,8 @@ const Grid = styled('div')`
 	justify-items: center;
 	width: 35rem;
 	height: 35rem;
-	background-color: #000000;
+	background-color: #194b4d;
+	padding: 0.3rem;
 `
 
 const Button = styled('button')`
