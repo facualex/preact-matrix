@@ -103,6 +103,7 @@ function Home() {
 					})}
 				</Grid>
 				<Button onClick={() => clearMatrix('matrixOneState')} >Clear</Button>
+				<textarea rows="5" />
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -118,6 +119,7 @@ function Home() {
 				})}
 				</Grid>
 				<Button onClick={() => clearMatrix('matrixTwoState')} >Clear</Button>
+				<textarea rows="5" />
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -133,6 +135,7 @@ function Home() {
 					})}
 				</Grid>
 				<Button onClick={() => clearMatrix('matrixThreeState')} >Clear</Button>
+				<textarea rows="5" />
 			</div>
 		</Container>
 	)
