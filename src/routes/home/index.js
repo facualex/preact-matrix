@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import { SliderPicker } from 'react-color'
 import cogoToast from 'cogo-toast'
+import Clipboard from 'react-copy-to-clipboard'
 import { Container, Grid, GridItem, Button, TextArea } from './style'
 
 const matrixLength = 64
@@ -121,10 +122,6 @@ function Home() {
     }))
   }
 
-  function copyEncoding() {
-    return cogoToast.success(`Drawing copied to clipboard!`)
-  }
-
   return (
     <Container>
       <div style={getHeaderStyle(selectedColor)}>
@@ -178,14 +175,18 @@ function Home() {
           >
             Draw
           </Button>
-          <Button
-            border="1px solid #40a4bf"
-            color="#40a4bf"
-            hoverBackgroundColor="#40a4bf"
-            onClick={() => copyEncoding()}
+          <Clipboard
+            text={JSON.stringify(matrixOneState?.encoding)}
+            onCopy={() => cogoToast.success(`Encoding copied to clipboard!`)}
           >
-            Copy
-          </Button>
+            <Button
+              border="1px solid #40a4bf"
+              color="#40a4bf"
+              hoverBackgroundColor="#40a4bf"
+            >
+              Copy
+            </Button>
+          </Clipboard>
         </div>
         <TextArea rows="5" content={JSON.stringify(matrixOneState?.encoding)} />
       </div>
@@ -225,7 +226,6 @@ function Home() {
             border="1px solid #40a4bf"
             color="#40a4bf"
             hoverBackgroundColor="#40a4bf"
-            onClick={() => copyEncoding()}
           >
             Copy
           </Button>
@@ -269,7 +269,6 @@ function Home() {
             border="1px solid #40a4bf"
             color="#40a4bf"
             hoverBackgroundColor="#40a4bf"
-            onClick={() => copyEncoding()}
           >
             Copy
           </Button>
