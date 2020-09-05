@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SliderPicker } from 'react-color';
 import { Container, Grid, GridItem, Button, TextArea } from './style';
+import cogoToast from 'cogo-toast'
 
 const matrixLength = 64
 const matrix = Array(matrixLength).fill().map((v,i)=>i);
@@ -101,6 +102,10 @@ function Home() {
 
 	}
 
+	function copyEncoding() {
+		return cogoToast.success('Encoding copied to clipboard!'); 
+	}
+
 	return (
 		<Container>
 			<div style={getHeaderStyle(selectedColor)}>
@@ -124,6 +129,7 @@ function Home() {
 				<div style={{ display: 'flex', flexDirection: 'row'}}>
 					<Button onClick={() => clearMatrix('matrixOneState')} >Clear</Button>
 					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+					<Button border="1px solid #40a4bf" color="#40a4bf" hoverBackgroundColor="#40a4bf" onClick={() => copyEncoding()} >Copy</Button>
 				</div>
 				<TextArea rows="5" content={JSON.stringify(matrixOneState?.encoding)} />
 			</div>
@@ -143,6 +149,7 @@ function Home() {
 				<div style={{ display: 'flex', flexDirection: 'row'}}>
 					<Button onClick={() => clearMatrix('matrixTwoState')} >Clear</Button>
 					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+					<Button border="1px solid #40a4bf" color="#40a4bf" hoverBackgroundColor="#40a4bf" onClick={() => copyEncoding()} >Copy</Button>
 				</div>
 
 				<TextArea rows="5" content={JSON.stringify(matrixTwoState?.encoding)} />
@@ -163,6 +170,7 @@ function Home() {
 				<div style={{ display: 'flex', flexDirection: 'row'}}>
 					<Button onClick={() => clearMatrix('matrixThreeState')} >Clear</Button>
 					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+					<Button border="1px solid #40a4bf" color="#40a4bf" hoverBackgroundColor="#40a4bf" onClick={() => copyEncoding()} >Copy</Button>
 				</div>
 
 				<TextArea rows="5" content={JSON.stringify(matrixThreeState?.encoding)} />
