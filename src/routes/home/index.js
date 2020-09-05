@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react'
 import { SliderPicker } from 'react-color';
-import { Container, Grid, GridItem, Button } from './style';
+import { Container, Grid, GridItem, Button, TextArea } from './style';
 
 const matrixLength = 64
 const matrix = Array(matrixLength).fill().map((v,i)=>i);
 
-function getMatrixInitialState({ selectedColor }) {
+function getMatrixInitialState() {
 	const matrixInitialState = {}
 	matrix.forEach(led => {
 		matrixInitialState[led] = {
 			state: 'active',
-			backgroundColor: 'white' ,
+			backgroundColor: '#ffffff' ,
 		}
 	})
+	matrixInitialState.encoding = getMatrixEncoding(matrixInitialState)
+
 	return  matrixInitialState
 }
 
@@ -27,6 +29,16 @@ function getHeaderStyle(backgroundColor) {
 		display: "flex",
 		justifyContent: "center",
 	}
+}
+
+function getMatrixEncoding(matrixState) {
+	// encode to json format
+	const encodedJson = {}
+	matrix.forEach(ledId => {
+		encodedJson[ledId] = matrixState[ledId].backgroundColor
+	})
+
+	return encodedJson
 }
 
 const initialState = {
@@ -59,9 +71,10 @@ function Home() {
 	function clearMatrix(matrixState) {
 		const stateToChangeCopy = { ...state[matrixState] }
 		matrix.forEach(ledId => {
-			stateToChangeCopy[ledId].backgroundColor = "white"
+			stateToChangeCopy[ledId].backgroundColor = "#ffffff"
 		})
-		setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
+		const newMatrixEncoding = getMatrixEncoding(stateToChangeCopy)
+		setState(prevState => ({ ...prevState, [matrixState]: { ...stateToChangeCopy, encoding: newMatrixEncoding } }))
 	}
 
 	function handleOnLedClick({ index, matrixState }) {
@@ -75,11 +88,17 @@ function Home() {
 		} else {
 				stateToChangeCopy[index] = {
 				...stateToChangeCopy[index],
-				backgroundColor: '#fff',
+				backgroundColor: '#ffffff',
 			}
 		}
 
-		return setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
+		const newMatrixEncoding = getMatrixEncoding(stateToChangeCopy)
+
+		return setState(prevState => ({ ...prevState, [matrixState]: { ...stateToChangeCopy, encoding: newMatrixEncoding } }))
+	}
+
+	function paintEncoding() {
+
 	}
 
 	return (
@@ -102,8 +121,11 @@ function Home() {
 						)
 					})}
 				</Grid>
-				<Button onClick={() => clearMatrix('matrixOneState')} >Clear</Button>
-				<textarea rows="5" />
+				<div style={{ display: 'flex', flexDirection: 'row'}}>
+					<Button onClick={() => clearMatrix('matrixOneState')} >Clear</Button>
+					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+				</div>
+				<TextArea rows="5" content={JSON.stringify(matrixOneState?.encoding)} />
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -118,8 +140,12 @@ function Home() {
 					)
 				})}
 				</Grid>
-				<Button onClick={() => clearMatrix('matrixTwoState')} >Clear</Button>
-				<textarea rows="5" />
+				<div style={{ display: 'flex', flexDirection: 'row'}}>
+					<Button onClick={() => clearMatrix('matrixTwoState')} >Clear</Button>
+					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+				</div>
+
+				<TextArea rows="5" content={JSON.stringify(matrixTwoState?.encoding)} />
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -134,8 +160,12 @@ function Home() {
 						)
 					})}
 				</Grid>
-				<Button onClick={() => clearMatrix('matrixThreeState')} >Clear</Button>
-				<textarea rows="5" />
+				<div style={{ display: 'flex', flexDirection: 'row'}}>
+					<Button onClick={() => clearMatrix('matrixThreeState')} >Clear</Button>
+					<Button border="1px solid #2bbb68" color="#2bbb68" hoverBackgroundColor="#2bbb68" onClick={() => console.log('draw')} >Draw</Button>
+				</div>
+
+				<TextArea rows="5" content={JSON.stringify(matrixThreeState?.encoding)} />
 			</div>
 		</Container>
 	)

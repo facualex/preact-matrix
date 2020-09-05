@@ -24,8 +24,8 @@ const Grid = styled('div')`
 const Button = styled('button')`
 	padding: 1rem 2rem;
     background-color: ${({ backgroundColor }) => backgroundColor ? backgroundColor : 'white'};
-	color: #2bb6bb;
-	border: 1px solid #2bb6bb;
+	color: ${({ color }) => color ? color : '#2bb6bb'};
+	border: ${({ border }) => border ? border : '1px solid #2bb6bb'};
 	margin: 1rem 0;
 	width: 100%;
 	cursor: pointer;
@@ -35,8 +35,8 @@ const Button = styled('button')`
     box-shadow: 0px 3px 10px 3px rgba(0,0,0,0.15);
     
     &:hover {
-	    background-color: #2bb6bb;
-	    color: white;
+		background-color: ${({ hoverBackgroundColor }) => hoverBackgroundColor ? hoverBackgroundColor : '#2bb6bb'};
+		color: ${({ hoverColor }) => hoverColor ? hoverColor : '#fff'};
     }
 `
 
@@ -55,6 +55,13 @@ const GridItem = styled('div')`
 	    transform: scale(1.1);
 	    z-index: 99;
     }
+`
+
+const TextArea = styled('textarea')`
+	background-color: #e0e0e0;
+	outline: none;
+	border: 1px solid #6e6e6e;
+	resize: none;
 `
 
 function GridWrapper({ children, ...props }) {
@@ -89,11 +96,20 @@ function ButtonWrapper({ children, ...props }) {
     )
 }
 
+function TextAreaWrapper({ content, ...props}) {
+	return (
+		<TextArea {...props}>
+			{ content }
+		</TextArea>
+	)
+}
+
 
 
 export {
     GridWrapper as Grid,
     GridItemWrapper as GridItem,
     ContainerWrapper as Container,
-    ButtonWrapper as Button,
+	ButtonWrapper as Button,
+	TextAreaWrapper as TextArea,
 }
