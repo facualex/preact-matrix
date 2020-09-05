@@ -58,7 +58,10 @@ function Home() {
 
 	function clearMatrix(matrixState) {
 		const stateToChangeCopy = { ...state[matrixState] }
-		stateToChangeCopy.forEach()
+		matrix.forEach(ledId => {
+			stateToChangeCopy[ledId].backgroundColor = "white"
+		})
+		setState(prevState => ({ ...prevState, [matrixState]: stateToChangeCopy }))
 	}
 
 	function handleOnLedClick({ index, matrixState }) {
@@ -91,7 +94,7 @@ function Home() {
 						)
 					})}
 				</Grid>
-				<Button>Clear</Button>
+				<Button onClick={() => clearMatrix('matrixOneState')} >Clear</Button>
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -106,7 +109,7 @@ function Home() {
 					)
 				})}
 				</Grid>
-				<Button>Clear</Button>
+				<Button onClick={() => clearMatrix('matrixTwoState')} >Clear</Button>
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column", justifyContent: 'center' }}>
@@ -121,7 +124,7 @@ function Home() {
 						)
 					})}
 				</Grid>
-				<Button>Clear</Button>
+				<Button onClick={() => clearMatrix('matrixThreeState')} >Clear</Button>
 			</div>
 		</Container>
 	)
