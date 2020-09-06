@@ -13,7 +13,6 @@ function getMatrixInitialState() {
   const matrixInitialState = {}
   matrix.forEach((led) => {
     matrixInitialState[led] = {
-      state: `active`,
       backgroundColor: `#ffffff`,
     }
   })
@@ -113,13 +112,36 @@ function Home() {
     }))
   }
 
-  function paintEncoding({ stringifiedEncoding, matrixToUpdate }) {
-    const parsedEncoding = JSON.parse(stringifiedEncoding)
+  function paintEncoding({ matrixToUpdate, matrixEncoding }) {
+    const newMatrix = {}
+
+    matrix.forEach(
+      (ledId) =>
+        (newMatrix[ledId] = {
+          backgroundColor: matrixEncoding[ledId],
+        }),
+    )
 
     setState((prevState) => ({
       ...prevState,
-      [matrixToUpdate]: { ...matrixToUpdate, encoding: parsedEncoding },
+      [matrixToUpdate]: { ...prevState[matrixToUpdate], newMatrix },
     }))
+  }
+
+  function handleManualEncodingChange({ event, matrixToUpdate }) {
+    const unparsedJson = event.target.value
+
+    if (unparsedJson) {
+      const parsedEncoding = JSON.parse(unparsedJson ? unparsedJson : {})
+
+      setState((prevState) => ({
+        ...prevState,
+        [matrixToUpdate]: {
+          ...prevState[matrixToUpdate],
+          encoding: parsedEncoding,
+        },
+      }))
+    }
   }
 
   return (
@@ -168,7 +190,7 @@ function Home() {
             hoverBackgroundColor="#2bbb68"
             onClick={() =>
               paintEncoding({
-                stringifiedEncoding: JSON.stringify(matrixOneState.encoding),
+                matrixEncoding: matrixOneState.encoding,
                 matrixToUpdate: `matrixOneState`,
               })
             }
@@ -188,7 +210,16 @@ function Home() {
             </Button>
           </Clipboard>
         </div>
-        <TextArea rows="5" content={JSON.stringify(matrixOneState?.encoding)} />
+        <TextArea
+          rows="5"
+          content={JSON.stringify(matrixOneState?.encoding)}
+          onChange={(event) =>
+            handleManualEncodingChange({
+              event,
+              matrixToUpdate: `matrixOneState`,
+            })
+          }
+        />
       </div>
 
       <div
@@ -222,13 +253,18 @@ function Home() {
           >
             Draw
           </Button>
-          <Button
-            border="1px solid #40a4bf"
-            color="#40a4bf"
-            hoverBackgroundColor="#40a4bf"
+          <Clipboard
+            text={JSON.stringify(matrixTwoState?.encoding)}
+            onCopy={() => cogoToast.success(`Encoding copied to clipboard!`)}
           >
-            Copy
-          </Button>
+            <Button
+              border="1px solid #40a4bf"
+              color="#40a4bf"
+              hoverBackgroundColor="#40a4bf"
+            >
+              Copy
+            </Button>
+          </Clipboard>
         </div>
 
         <TextArea rows="5" content={JSON.stringify(matrixTwoState?.encoding)} />
@@ -272,6 +308,18 @@ function Home() {
           >
             Copy
           </Button>
+          <Clipboard
+            text={JSON.stringify(matrixThreeState?.encoding)}
+            onCopy={() => cogoToast.success(`Encoding copied to clipboard!`)}
+          >
+            <Button
+              border="1px solid #40a4bf"
+              color="#40a4bf"
+              hoverBackgroundColor="#40a4bf"
+            >
+              Copy
+            </Button>
+          </Clipboard>
         </div>
 
         <TextArea
