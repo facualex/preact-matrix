@@ -73,8 +73,6 @@ function Home() {
     matrixThreeState,
   } = state
 
-  debugger
-
   function handleColorChange(color) {
     return setState((prevState) => ({ ...prevState, selectedColor: color.hex }))
   }
@@ -115,18 +113,24 @@ function Home() {
   }
 
   function paintEncoding({ matrixToUpdate, matrixEncoding }) {
-    const newMatrix = {}
+    const matrixToUpdateCopy = state[matrixToUpdate]
 
     matrix.forEach(
       (ledId) =>
-        (newMatrix[ledId] = {
+        (matrixToUpdateCopy[ledId] = {
           backgroundColor: matrixEncoding[ledId],
         }),
     )
 
+    const newEncoding = getMatrixEncoding(matrixToUpdateCopy)
+
     setState((prevState) => ({
       ...prevState,
-      [matrixToUpdate]: { ...prevState[matrixToUpdate], newMatrix },
+      [matrixToUpdate]: {
+        ...prevState[matrixToUpdate],
+        matrixToUpdateCopy,
+        encoding: newEncoding,
+      },
     }))
   }
 
