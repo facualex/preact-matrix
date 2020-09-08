@@ -255,7 +255,12 @@ function Home() {
             border="1px solid #2bbb68"
             color="#2bbb68"
             hoverBackgroundColor="#2bbb68"
-            onClick={() => console.log(`draw`)}
+            onClick={() =>
+              paintEncoding({
+                matrixEncoding: matrixTwoState.encoding,
+                matrixToUpdate: `matrixTwoState`,
+              })
+            }
           >
             Draw
           </Button>
@@ -273,7 +278,16 @@ function Home() {
           </Clipboard>
         </div>
 
-        <TextArea rows="5" content={JSON.stringify(matrixTwoState?.encoding)} />
+        <TextArea
+          rows="5"
+          content={JSON.stringify(matrixTwoState?.encoding)}
+          onChange={(event) =>
+            handleManualEncodingChange({
+              event,
+              matrixToUpdate: `matrixTwoState`,
+            })
+          }
+        />
       </div>
 
       <div
@@ -303,7 +317,12 @@ function Home() {
             border="1px solid #2bbb68"
             color="#2bbb68"
             hoverBackgroundColor="#2bbb68"
-            onClick={() => console.log(`draw`)}
+            onClick={() =>
+              paintEncoding({
+                matrixEncoding: matrixThreeState.encoding,
+                matrixToUpdate: `matrixThreeState`,
+              })
+            }
           >
             Draw
           </Button>
@@ -324,6 +343,12 @@ function Home() {
         <TextArea
           rows="5"
           content={JSON.stringify(matrixThreeState?.encoding)}
+          onChange={(event) =>
+            handleManualEncodingChange({
+              event,
+              matrixToUpdate: `matrixThreeState`,
+            })
+          }
         />
       </div>
     </Container>
