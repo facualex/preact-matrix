@@ -73,6 +73,8 @@ function Home() {
     matrixThreeState,
   } = state
 
+  debugger
+
   function handleColorChange(color) {
     return setState((prevState) => ({ ...prevState, selectedColor: color.hex }))
   }
@@ -300,13 +302,6 @@ function Home() {
             onClick={() => console.log(`draw`)}
           >
             Draw
-          </Button>
-          <Button
-            border="1px solid #40a4bf"
-            color="#40a4bf"
-            hoverBackgroundColor="#40a4bf"
-          >
-            Copy
           </Button>
           <Clipboard
             text={JSON.stringify(matrixThreeState?.encoding)}
